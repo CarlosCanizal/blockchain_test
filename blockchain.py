@@ -7,7 +7,7 @@ class Blackchain(object):
         #Creates a new Block and adds it to the chain
         pass
     
-    def new_transaction(self):
+    def new_transaction(self, sender, recipient, amount):
         """"
         Creates a new transaction to go into the next mined Block
 
@@ -18,7 +18,7 @@ class Blackchain(object):
         """
 
         self.current_transactions.append({
-            'sender':sender,
+            'sender': sender,
             'recipient': recipient,
             'amount': amount
         })
