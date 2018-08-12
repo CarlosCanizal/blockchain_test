@@ -1,11 +1,31 @@
+from time import time
+
 class Blackchain(object):
     def __init__(self):
         self.chain = []
         self.current_transactions = []
     
-    def new_block(self):
-        #Creates a new Block and adds it to the chain
-        pass
+    def new_block(self, proof, previous_hash=None):
+        """
+        Create a new Block in the Blockchain
+
+        :param proof: <int> The proof given by the Proof of Work algoritm
+        :param previous_hash: (Optional) <str> Hash of previous Block
+        :return: <dict> New Block
+        """
+        block = {
+            'index': len(self.chain) +1,
+            'timestamp': time(),
+            'transactions': self.current_transactions,
+            'proof': proof,
+            'previous_hash': previous_hash or self.hash(self.chain[-1])
+        }
+
+        #reset the current list of transactions
+        self.current_transactions = []
+
+        self.chain.append(block)
+        return block
     
     def new_transaction(self, sender, recipient, amount):
         """"
