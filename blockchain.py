@@ -1,6 +1,7 @@
 import hashlib
 import json
 from time import time
+from uuid import uuid4
 
 class Blackchain(object):
     def __init__(self):
@@ -64,3 +65,40 @@ class Blackchain(object):
     @property
     def last_block(self):
         return self.chain[-1]
+    
+    def proof_of_work(self, last_proof):
+        """
+        Simplr Proof of Work Algorithm:
+        -Find a number p' such that hash(pp') contains leading 4 zeroes, where p is the previous p'
+        - p is the previous proof, and p' is the new proof
+        
+        :param last_proof: <int>
+        :return <int>
+        """
+
+        proof = 0
+        while self.valid_proof(last_proof, proof) is False:
+            proof +=1
+        
+        return proof
+    
+    @staticmethod
+    def valid_proof(last_proof, proof):
+        """
+        Validates the Proof: Does hash(last_proof, proof) contain 4 leadings zerores?
+
+        :param last_proof: <int> Previous proof
+        :param proof: <int> Current proof
+        :return <bool> True if correct, False if not
+        """
+
+        guess = f'{last_proof}(proof)'.encode()
+        guess_hash = hashlib.sha256(guess).hexdigest()
+        return guess_hash[:4] == "0000"
+    
+
+# x = 8
+# y = 0  # We don't know what y should be yet...
+# while hashlib.sha256(f'{x*y}'.encode()).hexdigest()[-1] != "0":
+    # y += 1
+# print(f'The solution is y = {y}')
