@@ -1,3 +1,5 @@
+import hashlib
+import json
 from time import time
 
 class Blackchain(object):
@@ -47,10 +49,18 @@ class Blackchain(object):
     
     @staticmethod
     def hash(block):
-        #Hashes a block
-        pass
+        """
+        Creates a SHA-256 hash of a Block
+
+        :param block: <dict> Block
+        :return <str>
+        """
+
+        #We must sures that the Dictionary is Ordered, or we'll have inconsistent hashes
+
+        block_string = json.dumps(block, sort_keys=True).encode()
+        return hashlib.sha256(block_string).hexdigest()
     
     @property
     def last_block(self):
-        #Returns the last block in the chain
-        pass
+        return self.chain[-1]
